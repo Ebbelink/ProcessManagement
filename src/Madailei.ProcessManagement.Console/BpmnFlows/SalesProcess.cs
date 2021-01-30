@@ -28,7 +28,7 @@ namespace Madailei.ProcessManagement.Console.BpmnFlows
         
         private string GetSalesChannel_WorkerAction(string instanceKey)
         {
-            string salesChannel = new Random().Next(1) == 0 ? "consumer" : "business";
+            string salesChannel = new Random().Next(2) == 0 ? "consumer" : "business";
             
             System.Console.WriteLine($"The sales channel is {salesChannel}");
 

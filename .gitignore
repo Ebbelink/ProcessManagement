@@ -5,7 +5,10 @@
 *.suo
 *.user
 *.sln.docstates
+
+# Don't push secrets
 *.secret
+appsettings.Development.json
 
 # Build results
 

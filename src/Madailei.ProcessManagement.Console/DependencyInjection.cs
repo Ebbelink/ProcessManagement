@@ -1,4 +1,5 @@
-﻿using Madailei.ProcessManagement.BpmClient.Config;
+﻿using System;
+using Madailei.ProcessManagement.BpmClient.Config;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,8 +9,11 @@ namespace Madailei.ProcessManagement.Console
     {
         internal static IServiceCollection AddConfiguration(this IServiceCollection services)
         {
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{environmentName}.json", optional: false, reloadOnChange: true)
                 .Build();
 
             var BpmConnectSettings = new BpmServerConnectionSettings();
