@@ -9,7 +9,7 @@
     <None Remove="appsettings.json" />
     <None Remove="BpmnFlows\SalesProcess.bpmn" />
     <None Remove="BpmnFlows\TestProcess.bpmn" />
-    <None Remove="OrderManagerClient.txt" />
+    <None Remove="OrderManagerClient.secret" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +32,7 @@
     <Content Include="BpmnFlows\TestProcess.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OrderManagerClient.txt">
+    <Content Include="OrderManagerClient.secret">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -30,17 +30,20 @@ namespace Madailei.ProcessManagement.Console
             System.Console.WriteLine("Deploying BPM flows");
             InitializeBpmFlows(client).GetAwaiter().GetResult();
 
-            System.Console.Write("Finished booting, ready to rock!");
-            
-            var salesProces = new SalesProcess();
-            var result = client.StartWorkflow(salesProces.ProcessIdentifier).GetAwaiter().GetResult();
-            System.Console.WriteLine("Initiated a new workflow");
-
             client.StartWorkers(new TestProcess(), new SalesProcess());
             System.Console.WriteLine($"All workers have been started");
 
-            System.Console.WriteLine("Press enter to exit");
-            System.Console.ReadLine();
+            System.Console.Write("Finished booting, ready to rock!");
+            
+            while (true)
+            {
+                var salesProces = new SalesProcess();
+                var result = client.StartWorkflow(salesProces.ProcessIdentifier).GetAwaiter().GetResult();
+                System.Console.WriteLine("Initiated a new workflow");
+
+                System.Console.WriteLine("Press enter to create another");
+                System.Console.ReadLine();
+            }
         }
 
         private static async Task InitializeBpmFlows(IBpmClient client)
