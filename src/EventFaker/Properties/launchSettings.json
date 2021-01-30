@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Madailei.OrderManagement.Console": {
+      "commandName": "Project"
+    }
+  }
+}
