@@ -16,9 +16,15 @@ namespace Madailei.ProcessManagement.BpmClient.BpmProcess
 
         public abstract string ProcessName { get; }
 
-        public Task<byte[]> GetBpmBytesAsync()
+        public async Task<byte[]> GetBpmBytesAsync()
         {
-            return File.ReadAllBytesAsync(BpmDefinitionName);
+            byte[] result;
+            using (FileStream stream = File.Open(BpmDefinitionName, FileMode.Open))
+            {
+                result = new byte[stream.Length];
+                await stream.ReadAsync(result, 0, (int)stream.Length);
+                return result;
+            }
         }
 
         public abstract IEnumerable<WorkerDefinition> WorkerDefinitions();
