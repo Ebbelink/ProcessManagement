@@ -28,11 +28,5 @@ namespace Madailei.ProcessManagement.BpmClient.BpmProcess
         }
 
         public abstract IEnumerable<WorkerDefinition> WorkerDefinitions();
-
-        ///// <summary>
-        ///// Create a worker for the <see cref="ProcessIdentifier"/> defined
-        ///// </summary>
-        ///// <param name="action">The action that needs to be executed</param>
-        //public abstract void CreateWorker(Action<string> action);
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Madailei.ProcessManagement.BpmClient.BpmProcess;
 using Madailei.ProcessManagement.BpmClient.Config;
+using Newtonsoft.Json;
 
 namespace Madailei.ProcessManagement.BpmClient.LogOutput
 {
@@ -49,6 +50,20 @@ namespace Madailei.ProcessManagement.BpmClient.LogOutput
         {
             Console.WriteLine("The sun is shining and everything is perfect");
             
+            return Task.FromResult(true);
+        }
+
+        public Task SendMessage(string messageName)
+        {
+            Console.WriteLine("Sending message");
+
+            return Task.FromResult(true);
+        }
+
+        public Task SendMessage<T>(string messageName, T variablesObject)
+        {
+            Console.WriteLine($"Sending message with variables: {JsonConvert.SerializeObject(variablesObject, Formatting.Indented)}");
+
             return Task.FromResult(true);
         }
     }

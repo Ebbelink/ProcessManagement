@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1ashhvf" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.11.0">
-  <bpmn:process id="sales-process" name="Sales Process" isExecutable="true">
+  <bpmn:process id="order-process" name="Order Process" isExecutable="true">
     <bpmn:endEvent id="Event_1nybile">
       <bpmn:incoming>Flow_0nz8ewg</bpmn:incoming>
       <bpmn:incoming>Flow_19r534r</bpmn:incoming>
@@ -38,21 +38,26 @@
         <zeebe:taskDefinition type="get-sales-channel" retries="1" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_04u3p0d</bpmn:incoming>
+      <bpmn:incoming>Flow_1tv10uo</bpmn:incoming>
       <bpmn:outgoing>Flow_1556ib8</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:receiveTask id="receive-something" name="Initiate the process" messageRef="Message_1xc7gec">
       <bpmn:outgoing>Flow_04u3p0d</bpmn:outgoing>
     </bpmn:receiveTask>
     <bpmn:sequenceFlow id="Flow_04u3p0d" sourceRef="receive-something" targetRef="Activity_1pmv7wd" />
+    <bpmn:startEvent id="Event_1ox7bsm">
+      <bpmn:outgoing>Flow_1tv10uo</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1tv10uo" sourceRef="Event_1ox7bsm" targetRef="Activity_1pmv7wd" />
   </bpmn:process>
   <bpmn:message id="Message_002cezg" name="Message_3ltmd51" />
   <bpmn:message id="Message_1xc7gec" name="StartOrderProcessing">
     <bpmn:extensionElements>
-      <zeebe:subscription correlationKey="start_order_processing" />
+      <zeebe:subscription correlationKey="=start_order_processing" />
     </bpmn:extensionElements>
   </bpmn:message>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="sales-process">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order-process">
       <bpmndi:BPMNEdge id="Flow_04u3p0d_di" bpmnElement="Flow_04u3p0d">
         <di:waypoint x="220" y="207" />
         <di:waypoint x="320" y="207" />
@@ -89,6 +94,11 @@
         <di:waypoint x="420" y="207" />
         <di:waypoint x="525" y="207" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tv10uo_di" bpmnElement="Flow_1tv10uo">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="370" y="167" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1nybile_di" bpmnElement="Event_1nybile">
         <dc:Bounds x="832" y="189" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -106,6 +116,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1mbra5a_di" bpmnElement="receive-something">
         <dc:Bounds x="120" y="167" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ox7bsm_di" bpmnElement="Event_1ox7bsm">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

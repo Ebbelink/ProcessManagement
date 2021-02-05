@@ -37,9 +37,23 @@ namespace Madailei.ProcessManagement.Console
             
             while (true)
             {
-                var salesProces = new SalesProcess();
-                var result = client.StartWorkflow(salesProces.ProcessIdentifier).GetAwaiter().GetResult();
-                System.Console.WriteLine("Initiated a new workflow");
+                string option = System.Console.ReadLine();
+                switch (option)
+                {
+                    case "1":
+                        client.StartWorkflow(new SalesProcess().ProcessIdentifier).GetAwaiter().GetResult();
+                        System.Console.WriteLine("Initiated a new workflow");
+                        break;
+                    case "2":
+                        string messageName = "StartOrderProcessing";
+                        client.SendMessage(messageName).GetAwaiter().GetResult();
+                        System.Console.WriteLine($"Send a '{messageName}' message");
+                        break;
+                    default:
+                        continue;
+                }
+
+                
 
                 System.Console.WriteLine("Press enter to create another");
                 System.Console.ReadLine();

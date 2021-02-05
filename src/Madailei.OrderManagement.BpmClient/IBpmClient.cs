@@ -7,6 +7,10 @@ namespace Madailei.ProcessManagement.BpmClient
     {
         public Task<WorkflowIdentifierResponse> StartWorkflow(string bpmProcessId);
 
+        public Task SendMessage(string messageName);
+
+        public Task SendMessage<T>(string messageName, T variablesObject);
+
         public Task<bool> Status();
 
         public Task<bool> DeployFlow(string name, byte[] resourceBytes);

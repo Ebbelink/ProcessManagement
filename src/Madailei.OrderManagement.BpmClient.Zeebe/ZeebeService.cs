@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Madailei.ProcessManagement.BpmClient.BpmProcess;
 using Madailei.ProcessManagement.BpmClient.Config;
+using Newtonsoft.Json;
 using Zeebe.Client;
 using Zeebe.Client.Api.Responses;
 using Zeebe.Client.Impl.Builder;
@@ -110,6 +111,25 @@ namespace Madailei.ProcessManagement.BpmClient.Zeebe
         {
             var statusResult = await Status();
             return statusResult.Brokers.Any() ? true : false;
+        }
+
+        public async Task SendMessage(string messageName)
+        {
+            await _client.NewPublishMessageCommand()
+                .MessageName(messageName)
+                .CorrelationKey(Guid.NewGuid().ToString())
+                .Send();
+        }
+
+        public async Task SendMessage<T>(string messageName, T variablesObject)
+        {
+            string variablesJson = JsonConvert.SerializeObject(variablesObject, Formatting.Indented);
+
+            await _client.NewPublishMessageCommand()
+                .MessageName(messageName)
+                .CorrelationKey(Guid.NewGuid().ToString())
+                .Variables(variablesJson)
+                .Send();
         }
     }
 }
