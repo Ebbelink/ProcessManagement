@@ -9,6 +9,7 @@
     <None Remove="appsettings.Development.json" />
     <None Remove="appsettings.json" />
     <None Remove="BpmnFlows\OrderProcess.bpmn" />
+    <None Remove="BpmnFlows\OrderProcessWithPayment.bpmn" />
     <None Remove="BpmnFlows\SalesProcess.bpmn" />
     <None Remove="BpmnFlows\TestProcess.bpmn" />
     <None Remove="OrderManagerClient.secret" />
@@ -32,6 +33,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="BpmnFlows\OrderProcess.bpmn">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BpmnFlows\OrderProcessWithPayment.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="BpmnFlows\SalesProcess.bpmn">

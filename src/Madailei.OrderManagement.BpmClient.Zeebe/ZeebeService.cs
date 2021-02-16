@@ -5,6 +5,7 @@ using FluentValidation;
 using Madailei.ProcessManagement.BpmClient.BpmProcess;
 using Madailei.ProcessManagement.BpmClient.Config;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Zeebe.Client;
 using Zeebe.Client.Api.Responses;
 using Zeebe.Client.Impl.Builder;
@@ -14,6 +15,16 @@ namespace Madailei.ProcessManagement.BpmClient.Zeebe
     public class ZeebeService : IBpmClient
     {
         private readonly IZeebeClient _client;
+
+        private static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            Formatting = Formatting.Indented,
+            ContractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            }
+        };
 
         public ZeebeService(BpmServerConnectionSettings bpmOptions)
         {
@@ -82,12 +93,26 @@ namespace Madailei.ProcessManagement.BpmClient.Zeebe
             }
         }
 
-        public async Task<WorkflowIdentifierResponse> StartWorkflow(string processId)
+        public async Task<WorkflowIdentifierResponse> StartWorkflow(string bpmProcessId)
         {
             var workflowInstance = await _client
                 .NewCreateWorkflowInstanceCommand()
-                .BpmnProcessId(processId)
+                .BpmnProcessId(bpmProcessId)
                 .LatestVersion()
+                .Send();
+
+            return new WorkflowIdentifierResponse(workflowInstance.WorkflowInstanceKey.ToString(), workflowInstance.Version);
+        }
+
+        public async Task<WorkflowIdentifierResponse> StartWorkflow<T>(string bpmProcessId, T instantiationVariables)
+        {
+            string variablesJson = JsonConvert.SerializeObject(instantiationVariables, _jsonSettings);
+
+            var workflowInstance = await _client
+                .NewCreateWorkflowInstanceCommand()
+                .BpmnProcessId(bpmProcessId)
+                .LatestVersion()
+                .Variables(variablesJson)
                 .Send();
 
             return new WorkflowIdentifierResponse(workflowInstance.WorkflowInstanceKey.ToString(), workflowInstance.Version);
@@ -113,21 +138,21 @@ namespace Madailei.ProcessManagement.BpmClient.Zeebe
             return statusResult.Brokers.Any() ? true : false;
         }
 
-        public async Task SendMessage(string messageName)
+        public async Task SendMessage(string messageName, string correlationKey)
         {
             await _client.NewPublishMessageCommand()
                 .MessageName(messageName)
-                .CorrelationKey(Guid.NewGuid().ToString())
+                .CorrelationKey(correlationKey)
                 .Send();
         }
 
-        public async Task SendMessage<T>(string messageName, T variablesObject)
+        public async Task SendMessage<T>(string messageName, string correlationKey, T variablesObject)
         {
-            string variablesJson = JsonConvert.SerializeObject(variablesObject, Formatting.Indented);
+            string variablesJson = JsonConvert.SerializeObject(variablesObject, _jsonSettings);
 
             await _client.NewPublishMessageCommand()
                 .MessageName(messageName)
-                .CorrelationKey(Guid.NewGuid().ToString())
+                .CorrelationKey(correlationKey)
                 .Variables(variablesJson)
                 .Send();
         }

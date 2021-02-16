@@ -32,10 +32,18 @@ namespace Madailei.ProcessManagement.BpmClient.LogOutput
             Console.WriteLine("Started all workers");
         }
 
-        public Task<WorkflowIdentifierResponse> StartWorkflow(string processId)
+        public Task<WorkflowIdentifierResponse> StartWorkflow(string bpmProcessId)
         {
-            Console.WriteLine($"Started workflow for process id {processId}");
+            Console.WriteLine($"Started workflow for process id {bpmProcessId}");
             
+            return Task.FromResult(new WorkflowIdentifierResponse("LOG_INSTANCE", 1));
+        }
+
+        public Task<WorkflowIdentifierResponse> StartWorkflow<T>(string bpmProcessId, T instantiationVariables)
+        {
+            Console.WriteLine($"Started workflow for process id {bpmProcessId}");
+            Console.WriteLine($"Using variables: {JsonConvert.SerializeObject(instantiationVariables, Formatting.Indented)}");
+
             return Task.FromResult(new WorkflowIdentifierResponse("LOG_INSTANCE", 1));
         }
 
@@ -53,16 +61,17 @@ namespace Madailei.ProcessManagement.BpmClient.LogOutput
             return Task.FromResult(true);
         }
 
-        public Task SendMessage(string messageName)
+        public Task SendMessage(string messageName, string correlationKey)
         {
-            Console.WriteLine("Sending message");
+            Console.WriteLine($"Sending message {messageName} with correlation {correlationKey}");
 
             return Task.FromResult(true);
         }
 
-        public Task SendMessage<T>(string messageName, T variablesObject)
+        public Task SendMessage<T>(string messageName, string correlationKey, T variablesObject)
         {
-            Console.WriteLine($"Sending message with variables: {JsonConvert.SerializeObject(variablesObject, Formatting.Indented)}");
+            Console.WriteLine($"Sending message {messageName} with correlation {correlationKey}");
+            Console.WriteLine($"Using variables: {JsonConvert.SerializeObject(variablesObject, Formatting.Indented)}");
 
             return Task.FromResult(true);
         }

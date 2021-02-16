@@ -30,11 +30,13 @@ namespace Madailei.ProcessManagement.Console
             System.Console.WriteLine("Deploying BPM flows");
             InitializeBpmFlows(client).GetAwaiter().GetResult();
 
-            client.StartWorkers(new TestProcess(), new SalesProcess());
+            client.StartWorkers(new TestProcess(), new SalesProcess(), new OrderWithPaymentProcess());
             System.Console.WriteLine($"All workers have been started");
 
             System.Console.Write("Finished booting, ready to rock!");
-            
+
+            string latestOrderId = null;
+
             while (true)
             {
                 string option = System.Console.ReadLine();
@@ -42,21 +44,26 @@ namespace Madailei.ProcessManagement.Console
                 {
                     case "1":
                         client.StartWorkflow(new SalesProcess().ProcessIdentifier).GetAwaiter().GetResult();
-                        System.Console.WriteLine("Initiated a new workflow");
+                        System.Console.WriteLine($"Initiated a new {nameof(SalesProcess)}");
                         break;
                     case "2":
-                        string messageName = "StartOrderProcessing";
-                        client.SendMessage(messageName).GetAwaiter().GetResult();
+                        latestOrderId = Guid.NewGuid().ToString();
+
+                        client.StartWorkflow(
+                            new OrderWithPaymentProcess().ProcessIdentifier, 
+                            new OrderWithPayment_NewProcessRequest { OrderId = latestOrderId})
+                                .GetAwaiter().GetResult();
+
+                        System.Console.WriteLine($"Initiated a new {nameof(OrderWithPaymentProcess)}");
+                        break;
+                    case "3":
+                        string messageName = "payment-received";
+                        client.SendMessage(messageName, latestOrderId).GetAwaiter().GetResult();
                         System.Console.WriteLine($"Send a '{messageName}' message");
                         break;
                     default:
                         continue;
                 }
-
-                
-
-                System.Console.WriteLine("Press enter to create another");
-                System.Console.ReadLine();
             }
         }
 
