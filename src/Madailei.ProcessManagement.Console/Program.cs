@@ -5,6 +5,7 @@ using Madailei.ProcessManagement.BpmClient;
 using Madailei.ProcessManagement.BpmClient.BpmProcess;
 using Madailei.ProcessManagement.BpmClient.Zeebe;
 using Madailei.ProcessManagement.Console.BpmnFlows;
+using Madailei.ProcessManagement.Console.BpmnFlows.OrderProcessWithPayment.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -31,7 +32,7 @@ namespace Madailei.ProcessManagement.Console
             InitializeBpmFlows(client).GetAwaiter().GetResult();
 
             client.StartWorkers(new TestProcess(), new SalesProcess(), new OrderWithPaymentProcess());
-            System.Console.WriteLine($"All workers have been started");
+            System.Console.WriteLine("All workers have been started");
 
             System.Console.Write("Finished booting, ready to rock!");
 
@@ -51,14 +52,22 @@ namespace Madailei.ProcessManagement.Console
 
                         client.StartWorkflow(
                             new OrderWithPaymentProcess().ProcessIdentifier, 
-                            new OrderWithPayment_NewProcessRequest { OrderId = latestOrderId})
+                            new OrderWithPayment_InstanstiationRequest { OrderId = latestOrderId})
                                 .GetAwaiter().GetResult();
 
                         System.Console.WriteLine($"Initiated a new {nameof(OrderWithPaymentProcess)}");
                         break;
                     case "3":
                         string messageName = "payment-received";
-                        client.SendMessage(messageName, latestOrderId).GetAwaiter().GetResult();
+                        client.SendMessage(
+                            messageName, 
+                            latestOrderId, 
+                            new OrderWithPayment_PaymentReceivedRequest()
+                            {
+                                OrderId = latestOrderId,
+                                OrderValue = new Random().Next(200),                                
+                            })
+                                .GetAwaiter().GetResult();
                         System.Console.WriteLine($"Send a '{messageName}' message");
                         break;
                     default:

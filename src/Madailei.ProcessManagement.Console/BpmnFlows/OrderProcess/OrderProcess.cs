@@ -6,7 +6,7 @@ namespace Madailei.ProcessManagement.Console.BpmnFlows
 {
     public class OrderProcess : BaseBpmProcess
     {
-        public override string BpmDefinitionName { get; } = "./BpmnFlows/OrderProcess.bpmn";
+        public override string BpmDefinitionName { get; } = "./BpmnFlows/OrderProcess/OrderProcess.bpmn";
 
         public override string ProcessIdentifier { get; } = "order-process";
         

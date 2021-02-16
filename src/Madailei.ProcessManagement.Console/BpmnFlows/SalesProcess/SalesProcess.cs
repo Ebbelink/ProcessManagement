@@ -6,7 +6,7 @@ namespace Madailei.ProcessManagement.Console.BpmnFlows
 {
     public class SalesProcess : BaseBpmProcess
     {
-        public override string BpmDefinitionName { get; } = "./BpmnFlows/SalesProcess.bpmn";
+        public override string BpmDefinitionName { get; } = "./BpmnFlows/SalesProcess/SalesProcess.bpmn";
 
         public override string ProcessIdentifier { get; } = "sales-process";
         

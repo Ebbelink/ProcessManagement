@@ -32,16 +32,16 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BpmnFlows\OrderProcess.bpmn">
+    <Content Include="BpmnFlows\OrderProcess\OrderProcess.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BpmnFlows\OrderProcessWithPayment.bpmn">
+    <Content Include="BpmnFlows\OrderProcessWithPayment\OrderProcessWithPayment.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BpmnFlows\SalesProcess.bpmn">
+    <Content Include="BpmnFlows\SalesProcess\SalesProcess.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BpmnFlows\TestProcess.bpmn">
+    <Content Include="BpmnFlows\TestProcess\TestProcess.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OrderManagerClient.secret">

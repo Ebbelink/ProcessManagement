@@ -6,7 +6,7 @@ namespace Madailei.ProcessManagement.Console.BpmnFlows
 {
     public class OrderWithPaymentProcess : BaseBpmProcess
     {
-        public override string BpmDefinitionName { get; } = "./BpmnFlows/OrderProcessWithPayment.bpmn";
+        public override string BpmDefinitionName { get; } = "./BpmnFlows/OrderProcessWithPayment/OrderProcessWithPayment.bpmn";
 
         public override string ProcessIdentifier { get; } = "order-process-with-payment";
         
@@ -50,10 +50,5 @@ namespace Madailei.ProcessManagement.Console.BpmnFlows
 
             return null;
         }
-    }
-
-    public class OrderWithPayment_NewProcessRequest
-    {
-        public string OrderId { get; set; }
     }
 }

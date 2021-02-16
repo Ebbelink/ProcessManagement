@@ -6,7 +6,7 @@ namespace Madailei.ProcessManagement.Console.BpmnFlows
 {
     public class TestProcess : BaseBpmProcess
     {
-        public override string BpmDefinitionName { get; } = "./BpmnFlows/TestProcess.bpmn";
+        public override string BpmDefinitionName { get; } = "./BpmnFlows/TestProcess/TestProcess.bpmn";
 
         public override string ProcessIdentifier { get; } = "test-process";
         
