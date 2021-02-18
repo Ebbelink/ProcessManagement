@@ -5,6 +5,7 @@ using Madailei.ProcessManagement.BpmClient;
 using Madailei.ProcessManagement.BpmClient.BpmProcess;
 using Madailei.ProcessManagement.BpmClient.Zeebe;
 using Madailei.ProcessManagement.Console.BpmnFlows;
+using Madailei.ProcessManagement.Console.BpmnFlows.CrtOverVat;
 using Madailei.ProcessManagement.Console.BpmnFlows.OrderProcessWithPayment.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,10 +21,10 @@ namespace Madailei.ProcessManagement.Console
             System.Console.Write("Starting up");
 
             var serviceProvider = SetupServiceProvider();
-            System.Console.Write(" ...");
+            System.Console.Write("...");
             
             var client = serviceProvider.GetService<IBpmClient>();
-            System.Console.WriteLine(" ...");
+            System.Console.WriteLine("...");
 
             var status = client.Status().GetAwaiter().GetResult();
             System.Console.WriteLine($"The client is {(status ? "connected" : "dead")}");
@@ -31,7 +32,11 @@ namespace Madailei.ProcessManagement.Console
             System.Console.WriteLine("Deploying BPM flows");
             InitializeBpmFlows(client).GetAwaiter().GetResult();
 
-            client.StartWorkers(new TestProcess(), new SalesProcess(), new OrderWithPaymentProcess());
+            client.StartWorkers(
+                new TestProcess(), 
+                new SalesProcess(), 
+                new OrderWithPaymentProcess(),
+                new CrtOverVat());
             System.Console.WriteLine("All workers have been started");
 
             System.Console.Write("Finished booting, ready to rock!");
@@ -70,9 +75,24 @@ namespace Madailei.ProcessManagement.Console
                                 .GetAwaiter().GetResult();
                         System.Console.WriteLine($"Send a '{messageName}' message");
                         break;
+                    case "4":
+                        System.Console.Write("Pick a country: [NL, TR, PT, DE]");
+                        string countryCode = System.Console.ReadLine();
+                        System.Console.Write("In which year should the TAX / CRT be calculated?");
+                        int year = int.Parse(System.Console.ReadLine());
+
+                        client.StartWorkflow(new CrtOverVat().ProcessIdentifier,
+                            new BpmnFlows.CrtOverVat.Models.WorkflowInstanstiationRequest(
+                                $"TESTVIN{new Random().Next(99999).ToString().PadLeft(5, '0')}",
+                                countryCode,
+                                new DateTime(year, 1, 1))).GetAwaiter().GetResult();
+                        System.Console.WriteLine($"Initiated a new {nameof(CrtOverVat)}");
+                        break;
                     default:
                         continue;
                 }
+                
+                System.Console.WriteLine("");
             }
         }
 
