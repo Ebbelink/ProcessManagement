@@ -37,16 +37,10 @@
     <Content Include="BpmnFlows\CrtOverVat\CrtOverVat.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BpmnFlows\OrderProcess\OrderProcess.bpmn">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="BpmnFlows\OrderProcessWithPayment\OrderProcessWithPayment.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="BpmnFlows\SalesProcess\SalesProcess.bpmn">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="BpmnFlows\TestProcess\TestProcess.bpmn">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OrderManagerClient.secret">
